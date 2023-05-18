@@ -16,10 +16,10 @@ type Admin struct {
 }
 
 type Company struct {
-	CompanyID        string         `json:"company_id"`
-	CompanyName      string         `json:"company_name"`
-	CompanyBelongsTo string         `json:"company_belongs_to"`
-	CompanyLogo      sql.NullString `json:"company_logo"`
+	CompanyID   string         `json:"company_id"`
+	CompanyName string         `json:"company_name"`
+	CompanyLogo sql.NullString `json:"company_logo"`
+	UserID      string         `json:"user_id"`
 }
 
 type CompanyUser struct {
@@ -36,6 +36,13 @@ type Idea struct {
 	IdeaUpdatedAt   sql.NullTime `json:"idea_updated_at"`
 	IdeaDeletedAt   sql.NullTime `json:"idea_deleted_at"`
 	CompanyID       string       `json:"company_id"`
+}
+
+type Otp struct {
+	Otp      string       `json:"otp"`
+	Email    string       `json:"email"`
+	Expiry   time.Time    `json:"expiry"`
+	Verified sql.NullBool `json:"verified"`
 }
 
 type User struct {

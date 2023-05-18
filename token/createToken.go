@@ -7,12 +7,12 @@ import (
 	"github.com/kwandapchumba/prioritize/utils"
 )
 
-func CreateToken(userID, email string, issuedAt time.Time, duration time.Duration, isAdmin bool) (string, *Payload, error) {
+func CreateToken(userID, email, companyID string, issuedAt time.Time, duration time.Duration, isAdmin bool) (string, *Payload, error) {
 	id := utils.RandomString()
 
 	expiry := time.Now().UTC().Add(duration)
 
-	payload := NewPayload(id, userID, email, issuedAt, expiry, isAdmin)
+	payload := NewPayload(id, userID, email, companyID, issuedAt, expiry, isAdmin)
 
 	token := paseto.NewToken()
 

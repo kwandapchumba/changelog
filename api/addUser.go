@@ -18,7 +18,7 @@ var (
 )
 
 // add new user
-type addNewUserParams struct {
+type addNewUserRequestParams struct {
 	FullName string `json:"full_name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
@@ -30,7 +30,7 @@ func (h *BaseHandler) AddNewUser(w http.ResponseWriter, r *http.Request) {
 
 	d.DisallowUnknownFields()
 
-	var req addNewUserParams
+	var req addNewUserRequestParams
 
 	if err := d.Decode(&req); err != nil {
 		if e, ok := err.(*json.SyntaxError); ok {
@@ -38,7 +38,7 @@ func (h *BaseHandler) AddNewUser(w http.ResponseWriter, r *http.Request) {
 			response.Error(w, internalError, http.StatusInternalServerError)
 			return
 		} else {
-			log.Printf("error decoding request body to struct: %v", err)
+			log.Printf("error decoding request body to struct %v", err)
 			response.Error(w, internalError, http.StatusInternalServerError)
 			return
 		}
@@ -46,19 +46,19 @@ func (h *BaseHandler) AddNewUser(w http.ResponseWriter, r *http.Request) {
 
 	if req.Email == "" {
 		log.Println("email is empty")
-		response.Error(w, "email address cannot be empty", http.StatusBadRequest)
+		response.Error(w, "email address cannot be empty", http.StatusForbidden)
 		return
 	}
 
 	if req.FullName == "" {
 		log.Println("full name is empty")
-		response.Error(w, "full name cannot be empty", http.StatusBadRequest)
+		response.Error(w, "full name cannot be empty", http.StatusForbidden)
 		return
 	}
 
 	if req.Password == "" {
 		log.Println("password is empty")
-		response.Error(w, "password cannot be empty", http.StatusBadRequest)
+		response.Error(w, "password cannot be empty", http.StatusForbidden)
 		return
 	}
 
@@ -66,7 +66,7 @@ func (h *BaseHandler) AddNewUser(w http.ResponseWriter, r *http.Request) {
 
 	emailExistsInDB, err := q.EmailExistsInDB(r.Context(), req.Email)
 	if err != nil {
-		log.Println(fmt.Errorf("could not check in email exists with error: %v", err))
+		log.Printf("could not check in email exists cause %v", err)
 		response.Error(w, internalError, http.StatusInternalServerError)
 		return
 	}
@@ -90,17 +90,19 @@ func (h *BaseHandler) AddNewUser(w http.ResponseWriter, r *http.Request) {
 		UserPassword: hashedPass,
 	})
 	if err != nil {
-		log.Println(fmt.Errorf("AddNewUser: could not add new user with error: %v", err))
+		log.Println(fmt.Errorf("AddNewUser: could not add new user cause %v", err))
 		response.Error(w, internalError, http.StatusInternalServerError)
 		return
 	}
 
 	config, err := utils.LoadConfig(".")
 	if err != nil {
-		log.Fatalf("cannot load config: %v", err)
+		log.Printf("cannot load config: %v", err)
+		response.Error(w, internalError, http.StatusInternalServerError)
+		return
 	}
 
-	token, _, err := token.CreateToken(user.UserID, user.Email, time.Now().UTC(), config.AccessTokenDuration, false)
+	token, _, err := token.CreateToken(user.UserID, user.Email, "", time.Now().UTC(), config.AccessTokenDuration, false)
 	if err != nil {
 		log.Println("could not create access token")
 		response.Error(w, internalError, http.StatusInternalServerError)

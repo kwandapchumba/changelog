@@ -3,12 +3,11 @@
 DROP TABLE IF EXISTS company CASCADE;
 
 CREATE TABLE company (
-    company_id TEXT UNIQUE,
+    company_id TEXT UNIQUE NOT NULL,
     company_name TEXT NOT NULL,
-    company_belongs_to TEXT NOT NULL,
     company_logo TEXT,
-    PRIMARY KEY (company_id, company_belongs_to),
-    CONSTRAINT fk_user FOREIGN KEY (company_belongs_to) REFERENCES "user" (user_id) ON DELETE CASCADE
+    user_id TEXT NOT NULL REFERENCES "user" (user_id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id)
 );
 -- +goose StatementBegin
 SELECT 'up SQL query';

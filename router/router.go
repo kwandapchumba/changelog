@@ -1,13 +1,12 @@
 package router
 
 import (
-	"log"
-
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	"github.com/kwandapchumba/prioritize/api"
 	"github.com/kwandapchumba/prioritize/db"
+	myMiddleware "github.com/kwandapchumba/prioritize/middleware"
 )
 
 func Router() *chi.Mux {
@@ -32,10 +31,15 @@ func Router() *chi.Mux {
 
 	h := api.NewBaseHandler(db.ConnectDB())
 
-	log.Println(h)
-
 	r.Route("/public", func(r chi.Router) {
 		r.Post("/addNewUser", h.AddNewUser)
+		r.Post("/getOtp", h.GetOtp)
+		r.Post("/verifyOtp", h.VerifyOtp)
+	})
+
+	r.Route("/private", func(r chi.Router) {
+		r.Use(myMiddleware.Authenticator())
+		r.Post("/addCompany", h.AddCompany)
 	})
 
 	return r

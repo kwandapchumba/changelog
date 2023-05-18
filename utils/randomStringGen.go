@@ -30,3 +30,8 @@ func RandomString() string {
 
 	return randomString(charSet, 21)
 }
+
+func GenerateOTP() string {
+	charSet := "1234567890"
+	return randomString(charSet, 6)
+}

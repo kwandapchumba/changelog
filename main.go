@@ -19,5 +19,7 @@ func main() {
 		Handler: router.Router(),
 	}
 
+	log.Printf("Server running on http://localhost%s", config.ConnectionPort)
+
 	log.Fatal(server.ListenAndServe())
 }

@@ -9,8 +9,12 @@ import (
 )
 
 type Querier interface {
+	AddCompany(ctx context.Context, arg AddCompanyParams) (Company, error)
 	AddNewUser(ctx context.Context, arg AddNewUserParams) (User, error)
+	AddOtp(ctx context.Context, arg AddOtpParams) (Otp, error)
 	EmailExistsInDB(ctx context.Context, email string) (bool, error)
+	GetOtp(ctx context.Context, otp string) (Otp, error)
+	UpdateOtp(ctx context.Context, otp string) error
 }
 
 var _ Querier = (*Queries)(nil)
