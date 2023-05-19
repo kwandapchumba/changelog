@@ -7,7 +7,6 @@ package db
 
 import (
 	"context"
-	"database/sql"
 )
 
 const addNewUser = `-- name: AddNewUser :one
@@ -17,10 +16,10 @@ RETURNING user_id, full_name, email, email_verified, picture, user_password, use
 `
 
 type AddNewUserParams struct {
-	UserID       string         `json:"user_id"`
-	FullName     sql.NullString `json:"full_name"`
-	Email        string         `json:"email"`
-	UserPassword string         `json:"user_password"`
+	UserID       string `json:"user_id"`
+	FullName     string `json:"full_name"`
+	Email        string `json:"email"`
+	UserPassword string `json:"user_password"`
 }
 
 func (q *Queries) AddNewUser(ctx context.Context, arg AddNewUserParams) (User, error) {

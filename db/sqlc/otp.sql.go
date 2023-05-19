@@ -35,12 +35,37 @@ func (q *Queries) AddOtp(ctx context.Context, arg AddOtpParams) (Otp, error) {
 	return i, err
 }
 
+const deleteOtp = `-- name: DeleteOtp :exec
+DELETE FROM otp WHERE email = $1
+`
+
+func (q *Queries) DeleteOtp(ctx context.Context, email string) error {
+	_, err := q.db.ExecContext(ctx, deleteOtp, email)
+	return err
+}
+
 const getOtp = `-- name: GetOtp :one
 SELECT otp, email, expiry, verified FROM otp WHERE otp = $1 LIMIT 1
 `
 
 func (q *Queries) GetOtp(ctx context.Context, otp string) (Otp, error) {
 	row := q.db.QueryRowContext(ctx, getOtp, otp)
+	var i Otp
+	err := row.Scan(
+		&i.Otp,
+		&i.Email,
+		&i.Expiry,
+		&i.Verified,
+	)
+	return i, err
+}
+
+const getOtpByEmail = `-- name: GetOtpByEmail :one
+SELECT otp, email, expiry, verified FROM otp WHERE email = $1 LIMIT 1
+`
+
+func (q *Queries) GetOtpByEmail(ctx context.Context, email string) (Otp, error) {
+	row := q.db.QueryRowContext(ctx, getOtpByEmail, email)
 	var i Otp
 	err := row.Scan(
 		&i.Otp,

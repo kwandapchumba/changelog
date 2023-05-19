@@ -1,12 +1,16 @@
 package api
 
 import (
+	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
 
+	validation "github.com/go-ozzo/ozzo-validation"
+	"github.com/go-ozzo/ozzo-validation/is"
 	sqlc "github.com/kwandapchumba/prioritize/db/sqlc"
 	"github.com/kwandapchumba/prioritize/response"
 	"github.com/kwandapchumba/prioritize/token"
@@ -17,11 +21,14 @@ var (
 	internalError = "something went wrong"
 )
 
-// add new user
 type addNewUserRequestParams struct {
 	FullName string `json:"full_name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+func (s addNewUserRequestParams) validate() error {
+	return validation.ValidateStruct(&s, validation.Field(&s.FullName, validation.Required.Error("full name required")), validation.Field(&s.Password, validation.Required.Error("password is required"), validation.Length(6, 0).Error("password must be at least six characters long")), validation.Field(&s.Email, is.Email.Error("email must be valid"), validation.Length(3, 0).Error("email must be at least three characters long")))
 }
 
 func (h *BaseHandler) AddNewUser(w http.ResponseWriter, r *http.Request) {
@@ -44,36 +51,30 @@ func (h *BaseHandler) AddNewUser(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if req.Email == "" {
-		log.Println("email is empty")
-		response.Error(w, "email address cannot be empty", http.StatusForbidden)
-		return
-	}
-
-	if req.FullName == "" {
-		log.Println("full name is empty")
-		response.Error(w, "full name cannot be empty", http.StatusForbidden)
-		return
-	}
-
-	if req.Password == "" {
-		log.Println("password is empty")
-		response.Error(w, "password cannot be empty", http.StatusForbidden)
+	if err := req.validate(); err != nil {
+		log.Printf("adduser: %v", err)
+		response.Error(w, err.Error(), http.StatusForbidden)
 		return
 	}
 
 	q := sqlc.New(h.db)
 
-	emailExistsInDB, err := q.EmailExistsInDB(r.Context(), req.Email)
+	otp, err := q.GetOtpByEmail(r.Context(), req.Email)
 	if err != nil {
-		log.Printf("could not check in email exists cause %v", err)
+		if errors.Is(err, sql.ErrNoRows) {
+			log.Println("adduser, getoptbymail: otp not found")
+			response.Error(w, "otp not found", http.StatusForbidden)
+			return
+		}
+
+		log.Printf("adduser: getotpbyemail: %v", err)
 		response.Error(w, internalError, http.StatusInternalServerError)
 		return
 	}
 
-	if emailExistsInDB {
-		log.Println(fmt.Errorf("email (%v) exists", req.Email))
-		response.Error(w, "email is taken", http.StatusConflict)
+	if !otp.Verified.Valid {
+		log.Printf("adduser: email has not been verified")
+		response.Error(w, "email has not been verified", http.StatusForbidden)
 		return
 	}
 
@@ -86,11 +87,18 @@ func (h *BaseHandler) AddNewUser(w http.ResponseWriter, r *http.Request) {
 
 	user, err := q.AddNewUser(r.Context(), sqlc.AddNewUserParams{
 		UserID:       utils.RandomString(),
-		Email:        req.Email,
+		FullName:     req.FullName,
+		Email:        otp.Email,
 		UserPassword: hashedPass,
 	})
 	if err != nil {
 		log.Println(fmt.Errorf("AddNewUser: could not add new user cause %v", err))
+		response.Error(w, internalError, http.StatusInternalServerError)
+		return
+	}
+
+	if err := q.DeleteOtp(r.Context(), user.Email); err != nil {
+		log.Printf("adduser: deleteotp: %v", err)
 		response.Error(w, internalError, http.StatusInternalServerError)
 		return
 	}

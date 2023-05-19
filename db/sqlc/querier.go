@@ -12,8 +12,10 @@ type Querier interface {
 	AddCompany(ctx context.Context, arg AddCompanyParams) (Company, error)
 	AddNewUser(ctx context.Context, arg AddNewUserParams) (User, error)
 	AddOtp(ctx context.Context, arg AddOtpParams) (Otp, error)
+	DeleteOtp(ctx context.Context, email string) error
 	EmailExistsInDB(ctx context.Context, email string) (bool, error)
 	GetOtp(ctx context.Context, otp string) (Otp, error)
+	GetOtpByEmail(ctx context.Context, email string) (Otp, error)
 	UpdateOtp(ctx context.Context, otp string) error
 }
 

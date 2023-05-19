@@ -7,5 +7,11 @@ RETURNING *;
 -- name: GetOtp :one
 SELECT * FROM otp WHERE otp = $1 LIMIT 1;
 
+-- name: GetOtpByEmail :one
+SELECT * FROM otp WHERE email = $1 LIMIT 1;
+
 -- name: UpdateOtp :exec
 UPDATE otp SET verified = 'true' WHERE otp = $1;
+
+-- name: DeleteOtp :exec
+DELETE FROM otp WHERE email = $1;

@@ -46,12 +46,12 @@ type Otp struct {
 }
 
 type User struct {
-	UserID        string         `json:"user_id"`
-	FullName      sql.NullString `json:"full_name"`
-	Email         string         `json:"email"`
-	EmailVerified bool           `json:"email_verified"`
-	Picture       string         `json:"picture"`
-	UserPassword  string         `json:"user_password"`
-	UserCreatedAt time.Time      `json:"user_created_at"`
-	UserLastLogin time.Time      `json:"user_last_login"`
+	UserID        string    `json:"user_id"`
+	FullName      string    `json:"full_name"`
+	Email         string    `json:"email"`
+	EmailVerified bool      `json:"email_verified"`
+	Picture       string    `json:"picture"`
+	UserPassword  string    `json:"user_password"`
+	UserCreatedAt time.Time `json:"user_created_at"`
+	UserLastLogin time.Time `json:"user_last_login"`
 }

@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS "user" CASCADE;
 
 CREATE TABLE "user" (
     user_id TEXT UNIQUE,
-    full_name TEXT,
+    full_name TEXT NOT NULL,
     email TEXT NOT NULL CONSTRAINT email_must_be_unique UNIQUE,
     email_verified BOOLEAN NOT NULL DEFAULT 'false',
     picture TEXT NOT NULL DEFAULT '',
