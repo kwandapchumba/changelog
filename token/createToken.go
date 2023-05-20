@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"aidanwoods.dev/go-paseto"
-	"github.com/kwandapchumba/prioritize/utils"
+	"github.com/kwandapchumba/changelog/utils"
 )
 
 func CreateToken(userID, email, companyID string, issuedAt time.Time, duration time.Duration, isAdmin bool) (string, *Payload, error) {

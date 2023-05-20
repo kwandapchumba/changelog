@@ -9,8 +9,8 @@ import (
 	"time"
 
 	validation "github.com/go-ozzo/ozzo-validation"
-	sqlc "github.com/kwandapchumba/prioritize/db/sqlc"
-	"github.com/kwandapchumba/prioritize/response"
+	sqlc "github.com/kwandapchumba/changelog/db/sqlc"
+	"github.com/kwandapchumba/changelog/response"
 )
 
 type verifyOtpRequestParams struct {

@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/kwandapchumba/prioritize/router"
-	"github.com/kwandapchumba/prioritize/utils"
+	"github.com/kwandapchumba/changelog/router"
+	"github.com/kwandapchumba/changelog/utils"
 )
 
 func main() {

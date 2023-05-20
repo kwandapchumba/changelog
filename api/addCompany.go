@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"time"
 
-	sqlc "github.com/kwandapchumba/prioritize/db/sqlc"
-	middleware "github.com/kwandapchumba/prioritize/middleware"
-	"github.com/kwandapchumba/prioritize/response"
-	"github.com/kwandapchumba/prioritize/token"
-	"github.com/kwandapchumba/prioritize/utils"
+	sqlc "github.com/kwandapchumba/changelog/db/sqlc"
+	middleware "github.com/kwandapchumba/changelog/middleware"
+	"github.com/kwandapchumba/changelog/response"
+	"github.com/kwandapchumba/changelog/token"
+	"github.com/kwandapchumba/changelog/utils"
 )
 
 type addCompanyRequestParams struct {

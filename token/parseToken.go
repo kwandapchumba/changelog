@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"aidanwoods.dev/go-paseto"
-	"github.com/kwandapchumba/prioritize/utils"
+	"github.com/kwandapchumba/changelog/utils"
 )
 
 func ParseToken(encrypted string) (*Payload, error) {

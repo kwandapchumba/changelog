@@ -1,4 +1,4 @@
-module github.com/kwandapchumba/prioritize
+module github.com/kwandapchumba/changelog
 
 go 1.20
 

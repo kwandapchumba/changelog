@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	sqlc "github.com/kwandapchumba/prioritize/db/sqlc"
-	"github.com/kwandapchumba/prioritize/response"
-	"github.com/kwandapchumba/prioritize/utils"
+	sqlc "github.com/kwandapchumba/changelog/db/sqlc"
+	"github.com/kwandapchumba/changelog/response"
+	"github.com/kwandapchumba/changelog/utils"
 )
 
 type getOtpRequestParams struct {

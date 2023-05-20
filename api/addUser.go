@@ -11,10 +11,10 @@ import (
 
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
-	sqlc "github.com/kwandapchumba/prioritize/db/sqlc"
-	"github.com/kwandapchumba/prioritize/response"
-	"github.com/kwandapchumba/prioritize/token"
-	"github.com/kwandapchumba/prioritize/utils"
+	sqlc "github.com/kwandapchumba/changelog/db/sqlc"
+	"github.com/kwandapchumba/changelog/response"
+	"github.com/kwandapchumba/changelog/token"
+	"github.com/kwandapchumba/changelog/utils"
 )
 
 var (

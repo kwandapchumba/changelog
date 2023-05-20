@@ -1,4 +1,4 @@
-export GOOSE_DRIVER=postgres export GOOSE_DBSTRING="postgresql://prioritize:535169003@localhost:5432/prioritize?sslmode=disable"
+export GOOSE_DRIVER=postgres export GOOSE_DBSTRING="postgresql://changelog:535169003@localhost:5432/changelog?sslmode=disable"
 
 
 up                   Migrate the DB to the most recent version available

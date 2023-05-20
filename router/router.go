@@ -4,9 +4,9 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-	"github.com/kwandapchumba/prioritize/api"
-	"github.com/kwandapchumba/prioritize/db"
-	myMiddleware "github.com/kwandapchumba/prioritize/middleware"
+	"github.com/kwandapchumba/changelog/api"
+	"github.com/kwandapchumba/changelog/db"
+	myMiddleware "github.com/kwandapchumba/changelog/middleware"
 )
 
 func Router() *chi.Mux {

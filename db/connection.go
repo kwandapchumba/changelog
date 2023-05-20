@@ -5,7 +5,7 @@ import (
 	"time"
 
 	_ "github.com/jackc/pgx/v4/stdlib"
-	"github.com/kwandapchumba/prioritize/utils"
+	"github.com/kwandapchumba/changelog/utils"
 )
 
 func ConnectDB() *sql.DB {

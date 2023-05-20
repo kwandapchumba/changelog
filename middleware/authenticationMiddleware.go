@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/kwandapchumba/prioritize/response"
-	"github.com/kwandapchumba/prioritize/token"
+	"github.com/kwandapchumba/changelog/response"
+	"github.com/kwandapchumba/changelog/token"
 )
 
 type ContextKey string
